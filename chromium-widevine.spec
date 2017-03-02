@@ -2,7 +2,7 @@
 
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
-Version:        1.4.8.903
+Version:        1.4.8.962
 Release:        1%{?dist}
 
 License:        Proprietary
@@ -38,14 +38,12 @@ install -dm 755 %{buildroot}/%{_libdir}/chromium-browser/
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
 install -Dm644 opt/google/chrome/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium/
 
-ln -sf %{_libdir}/chromium/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdm.so
 ln -sf %{_libdir}/chromium/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdmadapter.so
 
 # License
 install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
-%{_libdir}/chromium-browser/libwidevinecdm.so
 %{_libdir}/chromium/libwidevinecdm.so
 %{_libdir}/chromium-browser/libwidevinecdmadapter.so
 %{_libdir}/chromium/libwidevinecdmadapter.so
@@ -53,6 +51,9 @@ install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 
 %changelog
+
+* Thu Mar 02 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.4.8.962-1
+- Udated to 1.4.8.962
 
 * Wed Jan 04 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.4.8.903-1
 - Updated to 1.4.8.903

@@ -3,7 +3,7 @@
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
 Version:        1.4.8.962
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        Proprietary
 Url:            http://www.google.com/chrome
@@ -33,7 +33,6 @@ rpm2cpio %{_builddir}/%{name}-%{version}/google-chrome-stable_current_x86_64.rpm
 
 install -dm 755 %{buildroot}/usr/share/licenses/%{name}/
 install -dm 755 %{buildroot}/%{_libdir}/chromium/
-install -dm 755 %{buildroot}/%{_libdir}/chromium-browser/
 
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
 install -Dm644 opt/google/chrome/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium/
@@ -45,12 +44,14 @@ install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
 %{_libdir}/chromium/libwidevinecdm.so
-%{_libdir}/chromium-browser/libwidevinecdmadapter.so
 %{_libdir}/chromium/libwidevinecdmadapter.so
 %{_datadir}/licenses/%{name}/eula_text.html
 
 
 %changelog
+
+* Fri Mar 03 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.4.8.962-2
+- Solved conflict with widevine in official package
 
 * Thu Mar 02 2017 David Vásquez <davidjeremias82 AT gmail DOT com> - 1.4.8.962-1
 - Udated to 1.4.8.962

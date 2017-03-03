@@ -37,8 +37,6 @@ install -dm 755 %{buildroot}/%{_libdir}/chromium/
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
 install -Dm644 opt/google/chrome/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium/
 
-ln -sf %{_libdir}/chromium/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdmadapter.so
-
 # License
 install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 

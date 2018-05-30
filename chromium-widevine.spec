@@ -27,22 +27,18 @@ wget -c -P %{_builddir}/%{name}-%{version} https://dl.google.com/linux/direct/go
 
 rpm2cpio %{_builddir}/%{name}-%{version}/google-chrome-stable_current_x86_64.rpm | cpio -idmv
 
-
-
 %install
 
 install -dm 755 %{buildroot}/usr/share/licenses/%{name}/
 install -dm 755 %{buildroot}/%{_libdir}/chromium/
 
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
-install -Dm644 opt/google/chrome/libwidevinecdmadapter.so %{buildroot}/%{_libdir}/chromium/
 
 # License
 install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
 %{_libdir}/chromium/libwidevinecdm.so
-%{_libdir}/chromium/libwidevinecdmadapter.so
 %{_datadir}/licenses/%{name}/eula_text.html
 
 

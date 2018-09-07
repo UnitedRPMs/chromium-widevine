@@ -2,7 +2,7 @@
 
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
-Version:        4.10.1146.0
+Version:        4.10.1192.0
 Release:        1%{?dist}
 
 License:        Proprietary
@@ -43,6 +43,9 @@ install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 
 %changelog
+
+* Thu Sep 06 2018 David Vásquez <davidva AT tuta DOT io> - 4.10.1192.0-1
+- Updated to 4.10.1192.0
 
 * Wed Jul 25 2018 David Vásquez <davidva AT tutanota DOT com> - 4.10.1146.0-1
 - Updated to 4.10.1146.0

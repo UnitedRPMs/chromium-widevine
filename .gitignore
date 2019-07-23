@@ -3,4 +3,5 @@ BUILDROOT/*
 RPMS/*
 SPECS/*
 SRPMS/*
-google-chrome*.rpm
+*.rpm
+.directory

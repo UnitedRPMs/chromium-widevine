@@ -1,16 +1,20 @@
+%global __strip /bin/true
 %define debug_package %{nil}
 
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
 Version:        4.10.1440.18
-Release:        1%{?dist}
+Release:        2%{?dist}
 
 License:        Proprietary
 Url:            http://www.google.com/chrome
 Group:          Applications/Internet
-Source:		http://www.google.com/chrome/intl/en/eula_text.html
+Source0:	https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+Source1:	http://www.google.com/chrome/intl/en/eula_text.html
+Source2:	get_cdm_version.c
 
-BuildRequires:  rpm cpio wget
+BuildRequires:  rpm cpio nss bc
+BuildRequires:	gcc >= 5.1.1-2
 ExclusiveArch:	x86_64
 Obsoletes: chromium-pepper-flash-chromium-pdf-plugin
 
@@ -20,12 +24,25 @@ A browser plugin designed for the viewing of premium video content.
 
 %prep
 %setup -c -T
-wget -c -P %{_builddir}/%{name}-%{version} https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-
 
 %build
 
-rpm2cpio %{_builddir}/%{name}-%{version}/google-chrome-stable_current_x86_64.rpm | cpio -idmv
+rpm2cpio %{S:0} | cpio -idmv
+
+# We need see the version
+pushd opt/google/chrome/
+gcc %{S:2} -o get_cdm_version -ldl
+./get_cdm_version > widevine_version
+wv=$(cat widevine_version)
+echo "version of widevine is $wv"
+
+_output=`echo "$wv != %{version}" | bc`
+if [[ $_output == "1" ]]; then
+   echo "Version in source is not equal to %{version}"
+exit 1
+else
+   echo "Version in source is equal to %{version}"
+fi
 
 %install
 
@@ -35,7 +52,7 @@ install -dm 755 %{buildroot}/%{_libdir}/chromium/
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
 
 # License
-install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
+install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
 %{_libdir}/chromium/libwidevinecdm.so
@@ -43,6 +60,9 @@ install -m644 %{SOURCE0} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 
 %changelog
+
+* Tue Jul 30 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1440.18-2
+- Added detection of version in source
 
 * Sun Jul 21 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1440.18-1
 - Updated to 4.10.1440.18

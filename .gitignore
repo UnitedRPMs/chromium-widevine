@@ -5,3 +5,4 @@ SPECS/*
 SRPMS/*
 *.rpm
 .directory
+widevine_version

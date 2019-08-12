@@ -4,7 +4,7 @@
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
 Version:        4.10.1440.18
-Release:        2%{?dist}
+Release:        7%{?dist}
 
 License:        Proprietary
 Url:            http://www.google.com/chrome
@@ -48,18 +48,26 @@ fi
 
 install -dm 755 %{buildroot}/usr/share/licenses/%{name}/
 install -dm 755 %{buildroot}/%{_libdir}/chromium/
+install -dm 755 %{buildroot}/%{_libdir}/chromium-browser
 
 install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
+
+# Really we need fix issues of other thirdparty repository?
+ln -sf %{_libdir}/chromium/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdm.so
 
 # License
 install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
 %{_libdir}/chromium/libwidevinecdm.so
+%{_libdir}/chromium-browser/libwidevinecdm.so
 %{_datadir}/licenses/%{name}/eula_text.html
 
 
 %changelog
+
+* Mon Aug 12 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1440.18-7
+- Future problem solved
 
 * Tue Jul 30 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1440.18-2
 - Added detection of version in source

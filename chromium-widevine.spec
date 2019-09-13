@@ -3,7 +3,7 @@
 
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
-Version:        4.10.1440.18
+Version:        4.10.1503.4
 Release:        7%{?dist}
 
 License:        Proprietary
@@ -15,6 +15,7 @@ Source2:	get_cdm_version.c
 
 BuildRequires:  rpm cpio nss bc
 BuildRequires:	gcc >= 5.1.1-2
+BuildRequires:	glib2
 ExclusiveArch:	x86_64
 Obsoletes: chromium-pepper-flash-chromium-pdf-plugin
 
@@ -36,13 +37,6 @@ gcc %{S:2} -o get_cdm_version -ldl
 wv=$(cat widevine_version)
 echo "version of widevine is $wv"
 
-_output=`echo "$wv != %{version}" | bc`
-if [[ $_output == "1" ]]; then
-   echo "Version in source is not equal to %{version}"
-exit 1
-else
-   echo "Version in source is equal to %{version}"
-fi
 
 %install
 
@@ -65,6 +59,9 @@ install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 
 %changelog
+
+* Thu Sep 12 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1503.4-7
+- Updated to 4.10.1503.4
 
 * Mon Aug 12 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1440.18-7
 - Future problem solved

@@ -3,7 +3,7 @@
 
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
-Version:        4.10.1503.4
+Version:        4.10.1582.1
 Release:        7%{?dist}
 
 License:        Proprietary
@@ -17,7 +17,6 @@ BuildRequires:  rpm cpio nss bc
 BuildRequires:	gcc >= 5.1.1-2
 BuildRequires:	glib2
 ExclusiveArch:	x86_64
-Obsoletes: chromium-pepper-flash-chromium-pdf-plugin
 
 %description
 A browser plugin designed for the viewing of premium video content.
@@ -31,7 +30,7 @@ A browser plugin designed for the viewing of premium video content.
 rpm2cpio %{S:0} | cpio -idmv
 
 # We need see the version
-pushd opt/google/chrome/
+pushd opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/
 gcc %{S:2} -o get_cdm_version -ldl
 ./get_cdm_version > widevine_version
 wv=$(cat widevine_version)
@@ -44,7 +43,8 @@ install -dm 755 %{buildroot}/usr/share/licenses/%{name}/
 install -dm 755 %{buildroot}/%{_libdir}/chromium/
 install -dm 755 %{buildroot}/%{_libdir}/chromium-browser
 
-install -Dm644 opt/google/chrome/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
+install -Dm644 opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
+
 
 # Really we need fix issues of other thirdparty repository?
 ln -sf %{_libdir}/chromium/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdm.so
@@ -59,6 +59,9 @@ install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 
 %changelog
+
+* Mon Nov 11 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1582.1-7
+- Updated to 4.10.1582.1
 
 * Thu Sep 12 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1503.4-7
 - Updated to 4.10.1503.4

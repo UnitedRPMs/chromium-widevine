@@ -12,7 +12,6 @@ License:        Proprietary
 Url:            http://www.google.com/chrome
 Group:          Applications/Internet
 Source0:	https://dl.google.com/widevine-cdm/%{version}-linux-x64.zip
-Source2:	get_cdm_version.c
 
 ExclusiveArch:	x86_64
 

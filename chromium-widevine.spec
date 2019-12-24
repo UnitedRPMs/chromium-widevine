@@ -1,21 +1,19 @@
 %global __strip /bin/true
 %define debug_package %{nil}
 
+# check version: WIDEVINE_VERSION="${WIDEVINE_VERSION:-$(wget -qO- https://dl.google.com/widevine-cdm/versions.txt | tail -n1)}" && echo $WIDEVINE_VERSION
+
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
-Version:        4.10.1610.0
+Version:        4.10.1582.2
 Release:        7%{?dist}
 
 License:        Proprietary
 Url:            http://www.google.com/chrome
 Group:          Applications/Internet
-Source0:	https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-Source1:	http://www.google.com/chrome/intl/en/eula_text.html
+Source0:	https://dl.google.com/widevine-cdm/%{version}-linux-x64.zip
 Source2:	get_cdm_version.c
 
-BuildRequires:  rpm cpio nss bc
-BuildRequires:	gcc >= 5.1.1-2
-BuildRequires:	glib2
 ExclusiveArch:	x86_64
 
 %description
@@ -23,18 +21,9 @@ A browser plugin designed for the viewing of premium video content.
 
 
 %prep
-%setup -c -T
+%autosetup -c
 
 %build
-
-rpm2cpio %{S:0} | cpio -idmv
-
-# We need see the version
-pushd opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/
-gcc %{S:2} -o get_cdm_version -ldl
-./get_cdm_version > widevine_version
-wv=$(cat widevine_version)
-echo "version of widevine is $wv"
 
 
 %install
@@ -43,22 +32,27 @@ install -dm 755 %{buildroot}/usr/share/licenses/%{name}/
 install -dm 755 %{buildroot}/%{_libdir}/chromium/
 install -dm 755 %{buildroot}/%{_libdir}/chromium-browser
 
-install -Dm644 opt/google/chrome/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
+install -Dm644 libwidevinecdm.so %{buildroot}/%{_libdir}/chromium/
+install -Dm644 manifest.json %{buildroot}/%{_libdir}/chromium/
 
 
 # Really we need fix issues of other thirdparty repository?
 ln -sf %{_libdir}/chromium/libwidevinecdm.so %{buildroot}/%{_libdir}/chromium-browser/libwidevinecdm.so
+ln -sf %{_libdir}/chromium/manifest.json %{buildroot}/%{_libdir}/chromium-browser/manifest.json
 
-# License
-install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
+%license LICENSE.txt	
+%{_libdir}/chromium/manifest.json
 %{_libdir}/chromium/libwidevinecdm.so
 %{_libdir}/chromium-browser/libwidevinecdm.so
-%{_datadir}/licenses/%{name}/eula_text.html
+%{_libdir}/chromium-browser/manifest.json
 
 
 %changelog
+
+* Mon Dec 23 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1582.2-7
+- Updated to 4.10.1582.2
 
 * Fri Dec 13 2019 David Vásquez <davidva AT tuta DOT io> - 4.10.1610.0-7
 - Updated to 4.10.1610.0

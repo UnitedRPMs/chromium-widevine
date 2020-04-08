@@ -4,7 +4,7 @@
 Summary:        Plugin designed for the viewing of premium video content
 Name:           chromium-widevine
 Version:        4.10.1610.0
-Release:        9%{?dist}
+Release:        10%{?dist}
 
 License:        Proprietary
 Url:            http://www.google.com/chrome
@@ -51,15 +51,23 @@ install -dm 755 %{buildroot}/%{_libdir}/chromium-browser
 mv -f opt/google/chrome/WidevineCdm/ %{buildroot}/%{_libdir}/chromium/
 cp -f %{S:3} %{buildroot}/%{_libdir}/chromium/WidevineCdm/manifest.json
 
+pushd %{buildroot}/%{_libdir}/chromium/
+ln -sf %{_libdir}/chromium/WidevineCdm/_platform_specific/linux_x64/libwidevinecdm.so libwidevinecdm.so
+popd
+
 # License
 install -m644 %{SOURCE1} %{buildroot}/%{_datadir}/licenses/%{name}/
 
 %files
 %{_libdir}/chromium/WidevineCdm/
+%{_libdir}/chromium/libwidevinecdm.so
 %{_datadir}/licenses/%{name}/eula_text.html
 
 
 %changelog
+
+* Tue Apr 07 2020 David Vásquez <davidva AT tuta DOT io> - 4.10.1610.0-10
+- Fixed new path
 
 * Sat Jan 25 2020 David Vásquez <davidva AT tuta DOT io> - 4.10.1610.0-9
 - Enabled automatic component

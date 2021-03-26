@@ -28,5 +28,5 @@ jobs:
       # Runs a single command using the runners shell
       - name: build
         run: |
-           docker run -v $(pwd):/root/enjoy --cap-add=SYS_ADMIN davidva/unibuild-35 /bin/sh -c "rm -f urpms && wget -c https://raw.githubusercontent.com/kuboosoft/united-build/master/urpms && chmod a+x urpms && /urpms -g chromium-widevine/chromium-widevine -s chromium-widevine.spec -r true -d 'dist .fc35' -u true"
+           docker run -v $(pwd):/root/enjoy --cap-add=SYS_ADMIN davidva/unibuild-35 /bin/sh -c "rm -f urpms && wget -c https://raw.githubusercontent.com/kuboosoft/united-build/master/urpms && chmod a+x urpms && /urpms -g UnitedRPMs/chromium-widevine -s chromium-widevine.spec -r true -d 'dist .fc35' -u true"
 
